@@ -1,4 +1,4 @@
-<div style="max-width: 600px; margin: 0 auto;">
+<div class="form-container">
     <h1>Tambah Project Baru</h1>
     
     <form action="/my-project" method="POST">
@@ -23,20 +23,20 @@
 </div>
 
 <script>
-    document.getElementById('gambar').addEventListener('change', async function(e) {
+    document.getElementById('gambar').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
             const formData = new FormData();
             formData.append('image', file);
             
-            const response = await fetch('/upload-gambar', {
+            fetch('/upload-gambar', {
                 method: 'POST',
                 body: formData
+            }).then(() => {
+                alert('Gambar berhasil diupload');
+            }).catch(() => {
+                alert('Gagal upload gambar');
             });
-            
-            if (response.redirected) {
-                window.location.href = response.url;
-            }
         }
     });
 </script>
