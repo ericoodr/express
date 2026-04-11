@@ -1,0 +1,69 @@
+<div class="projects-container">
+    <h1>My Projects</h1>
+    <p>Here are some projects I have worked on</p>
+    
+    {{#if flash}}
+        <div class="alert alert-{{flash.type}}">{{flash.message}}</div>
+    {{/if}}
+    
+    <div class="tambah-project">
+        <button class="btn-tambah" id="btnTambah">Add Project</button>
+    </div>
+    
+    <div id="formTambah" style="display: none;">
+        <h3>Tambah Project Baru</h3>
+        <form action="/my-project" method="POST">
+            <input type="text" name="name" placeholder="Nama Project" required>
+            <textarea name="description" placeholder="Deskripsi" rows="3" required></textarea>
+            <input type="text" name="tag" placeholder="Tag" required>
+            
+            <form action="/upload-gambar" method="POST" enctype="multipart/form-data" id="formUpload">
+                <input type="file" name="image" accept="image/*" required>
+                <button type="submit">Upload Gambar</button>
+            </form>
+            
+            {{#if gambarSementara}}
+                <div>
+                    <img src="{{gambarSementara}}" width="100">
+                    <p>Gambar siap digunakan</p>
+                </div>
+            {{/if}}
+            
+            <button type="submit">Simpan Project</button>
+        </form>
+    </div>
+    
+    <div class="projects-grid">
+        {{#if projects.length}}
+            {{#each projects}}
+                <div class="card">
+                    {{#if this.img}}
+                        <img src="{{this.img}}" class="project-image">
+                    {{/if}}
+                    <h3>{{this.name}}</h3>
+                    <p>{{this.description}}</p>
+                    <p><strong>Tag:</strong> {{this.tag}}</p>
+                    <div class="card-actions">
+                        <a href="/my-project/edit/{{this.id}}" class="btn-edit">Edit</a>
+                        <form action="/my-project/delete/{{this.id}}" method="POST" class="form-hapus">
+                            <button type="submit" class="btn-hapus" onclick="return confirm('Yakin hapus?')">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            <p class="empty-projects">No projects found. add new project!</p>
+        {{/if}}
+    </div>
+</div>
+
+<script>
+    document.getElementById('btnTambah').onclick = function() {
+        var form = document.getElementById('formTambah');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    }
+</script>

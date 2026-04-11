@@ -1,0 +1,28 @@
+<div class="form-container">
+    <h1>Edit Project</h1>
+    
+    <form action="/my-project/edit/{{project.id}}" method="POST">
+        <div>
+            <label>Nama Project</label>
+            <input type="text" name="name" value="{{project.name}}" required>
+        </div>
+        
+        <div>
+            <label>Deskripsi</label>
+            <textarea name="description" rows="4" required>{{project.description}}</textarea>
+        </div>
+        
+        <div>
+            <label>Tag</label>
+            <input type="text" name="tag" value="{{project.tag}}" required>
+        </div>
+        
+        <div>
+            <label>URL Gambar</label>
+            <input type="text" name="img" value="{{project.img}}">
+        </div>
+        
+        <button type="submit">Update</button>
+        <a href="/my-project" class="btn-batal">Batal</a>
+    </form>
+</div>

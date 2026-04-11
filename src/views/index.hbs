@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="about-section">
+        <div class="text">
+            <h1>Hi I'm Enrico Danu P</h1>
+            <h2>A Designer & Web Developer</h2>
+            <p>I'm a front-end developer who likes creating portfolio websites</p>
+        </div>
+        <div class="gambar">
+            <img src="assets/images/image.jpg" width="200">
+        </div>
+    </div>
+    
+    <div class="pesan-section">
+        <h3>Pesan Masuk</h3>
+        
+        <div class="cari-container">
+            <form method="GET" action="/">
+                <input type="text" name="search" placeholder="Cari nama..." value="{{keyword}}">
+                <button type="submit">Find</button>
+                <button type="submit">All Messages</button>
+            </form>
+        </div>
+        
+        <div>
+            {{#if messages.length}}
+                {{#each messages}}
+                    <div class="pesan-item">
+                        <strong>{{this.nama}}</strong>
+                        <small>{{this.email}}</small>
+                        <small>{{formatDate this.tanggal}}</small>
+                        <p>{{this.pesan}}</p>
+                        <a href="/delete/{{this.id}}" onclick="return confirm('Hapus pesan ini?')">Hapus</a>
+                    </div>
+                {{/each}}
+            {{else}}
+                <div style="padding: 40px; text-align: center;">
+                    <p>Belum ada pesan</p>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</div>
