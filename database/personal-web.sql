@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict A1LMdNfmHBtdVG6Ef7ICNRo1BTTWOWZYpaj97TeyvwIYhaXqmgdTMkKhe1CoXrI
+\restrict 0TQ0rirUmbjPwLC9WDcnRxb3CQnLLMPxzar18nx9SM4gZcljraJCF1Dlg4MxCcs
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
 
--- Started on 2026-04-14 02:36:05
+-- Started on 2026-04-14 05:25:14
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -132,7 +132,7 @@ CREATE TABLE public.users (
     id integer NOT NULL,
     email character varying(255) NOT NULL,
     full_name character varying(255) NOT NULL,
-    password character varying(2255) NOT NULL
+    password character varying(225) NOT NULL
 );
 
 
@@ -216,6 +216,7 @@ COPY public.technologies (id, skills) FROM stdin;
 --
 
 COPY public.users (id, email, full_name, password) FROM stdin;
+2	ericoodr@gmail.com	Enrico Danu Prasetya	$2b$10$Xz6r.cBclR//uC65RBfpROxoWHYLWRTH4Tm9UYdyVlvIk0gB9JAcu
 \.
 
 
@@ -243,7 +244,7 @@ SELECT pg_catalog.setval('public.technologies_id_seq', 3, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
 
 
 --
@@ -306,11 +307,11 @@ CREATE INDEX idx_technologies_skills ON public.technologies USING btree (skills)
 CREATE INDEX idx_users_email ON public.users USING btree (email);
 
 
--- Completed on 2026-04-14 02:36:05
+-- Completed on 2026-04-14 05:25:14
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict A1LMdNfmHBtdVG6Ef7ICNRo1BTTWOWZYpaj97TeyvwIYhaXqmgdTMkKhe1CoXrI
+\unrestrict 0TQ0rirUmbjPwLC9WDcnRxb3CQnLLMPxzar18nx9SM4gZcljraJCF1Dlg4MxCcs
 
