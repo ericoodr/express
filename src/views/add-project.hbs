@@ -1,42 +1,42 @@
-<div class="form-container">
-    <h1>Tambah Project Baru</h1>
-    
-    <form action="/my-project" method="POST">
-        <div>
-            <label>Nama Project</label>
-            <input type="text" name="name" required>
-        </div>
+    <div class="form-container">
+        <h1>Tambah Project Baru</h1>
         
-        <div>
-            <label>Deskripsi</label>
-            <textarea name="description" rows="5" required></textarea>
-        </div>
-        
-        <div>
-            <label>Upload Gambar</label>
-            <input type="file" id="gambar" accept="image/*">
-            <input type="hidden" name="image" id="imageBase64">
-        </div>
-        
-        <button type="submit">Simpan Project</button>
-    </form>
-</div>
-
-<script>
-    document.getElementById('gambar').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const formData = new FormData();
-            formData.append('image', file);
+        <form action="/my-project" method="POST">
+            <div>
+                <label>Nama Project</label>
+                <input type="text" name="name" required>
+            </div>
             
-            fetch('/upload-gambar', {
-                method: 'POST',
-                body: formData
-            }).then(() => {
-                alert('Gambar berhasil diupload');
-            }).catch(() => {
-                alert('Gagal upload gambar');
-            });
-        }
-    });
-</script>
+            <div>
+                <label>Deskripsi</label>
+                <textarea name="description" rows="5" required></textarea>
+            </div>
+            
+            <div>
+                <label>Upload Gambar</label>
+                <input type="file" id="gambar" accept="image/*">
+                <input type="hidden" name="image" id="imageBase64">
+            </div>
+            
+            <button type="submit">Simpan Project</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('gambar').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('image', file);
+                
+                fetch('/upload-gambar', {
+                    method: 'POST',
+                    body: formData
+                }).then(() => {
+                    alert('Gambar berhasil diupload');
+                }).catch(() => {
+                    alert('Gagal upload gambar');
+                });
+            }
+        });
+    </script>

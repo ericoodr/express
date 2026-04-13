@@ -1,6 +1,6 @@
 export async function getProjects(req, res, db, gambarSementara) {
   try {
-    const result = await db.query('SELECT * FROM projects ORDER BY id ASC')
+    const result = await db.query('SELECT * FROM projects WHERE user_id = $1 ORDER BY id ASC', [req.session.userId])
     const flash = req.session.flash
     delete req.session.flash
 
@@ -22,7 +22,7 @@ export async function getProjects(req, res, db, gambarSementara) {
 export async function getProjectsById(req, res, db) {
   try {
     const { id } = req.params
-    const result = await db.query('SELECT * FROM projects WHERE id = $1', [id])
+    const result = await db.query('SELECT * FROM projects WHERE id = $1 AND user_id = $2', [id, req.session.userId])
     if (result.rows.length === 0) {
       return res.send('Project not found')
     }
@@ -51,7 +51,7 @@ export async function createProject(req, res, db, gambarSementara) {
       return res.redirect('/my-project')
     }
 
-    await db.query('INSERT INTO projects (name, description, tag, img) VALUES ($1, $2, $3, $4)', [name, description, tag, img])
+    await db.query('INSERT INTO projects (user_id, name, description, tag, img) VALUES ($1, $2, $3, $4, $5)', [req.session.userId, name, description, tag, img])
     req.session.flash = { type: 'success', message: 'Project berhasil ditambahkan' }
     res.redirect('/my-project')
   } catch (error) {
@@ -64,7 +64,7 @@ export async function createProject(req, res, db, gambarSementara) {
 export async function getEditProject(req, res, db) {
   try {
     const { id } = req.params
-    const result = await db.query('SELECT * FROM projects WHERE id = $1', [id])
+    const result = await db.query('SELECT * FROM projects WHERE id = $1 AND user_id = $2', [id, req.session.userId])
     if (result.rows.length === 0) {
       return res.redirect('/my-project')
     }
@@ -85,11 +85,11 @@ export async function updateProject(req, res, db, gambarSementara) {
     let img = gambarSementara
 
     if (!img) {
-      const result = await db.query('SELECT img FROM projects WHERE id = $1', [id])
+      const result = await db.query('SELECT img FROM projects WHERE id = $1 AND user_id = $2', [id, req.session.userId])
       img = result.rows[0].img
     }
 
-    await db.query('UPDATE projects SET name = $1, description = $2, tag = $3, img = $4 WHERE id = $5', [name, description, tag, img, id])
+    await db.query('UPDATE projects SET name = $1, description = $2, tag = $3, img = $4 WHERE id = $5 AND user_id = $6', [name, description, tag, img, id, req.session.userId])
     req.session.flash = { type: 'success', message: 'Project berhasil diupdate' }
     res.redirect('/my-project')
   } catch (error) {
@@ -102,7 +102,7 @@ export async function updateProject(req, res, db, gambarSementara) {
 export async function deleteProject(req, res, db) {
   try {
     const { id } = req.params
-    await db.query('DELETE FROM projects WHERE id = $1', [id])
+    await db.query('DELETE FROM projects WHERE id = $1 AND user_id = $2', [id, req.session.userId])
     req.session.flash = { type: 'success', message: 'Project berhasil dihapus' }
     res.redirect('/my-project')
   } catch (error) {

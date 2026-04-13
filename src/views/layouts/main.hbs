@@ -12,6 +12,14 @@
         <a href="/">Home</a>
         <a href="/my-project">Project</a>
         <a href="/contact">Contact</a>
+        
+        {{#if session.userId}}
+            <span style="color: orange;">Halo, {{session.userName}}</span>
+            <a href="/logout">Logout</a>
+        {{else}}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        {{/if}}
     </nav>
 
     <div id="content">

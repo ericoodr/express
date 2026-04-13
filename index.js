@@ -4,6 +4,7 @@ import db from './config/database.js'
 import session from 'express-session'
 import multer from 'multer'
 import { getProjects, getProjectsById, createProject, getEditProject, updateProject, deleteProject } from './src/assets/scripts/project.js'
+import authRoutes from './src/routes/authrouter.js'
 
 const uploadFile = multer({ storage: multer.memoryStorage() })
 let gambarSementara = ''
@@ -19,8 +20,18 @@ app.use('/assets', express.static('src/assets'))
 app.use(session({
   secret: 'rahasia',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }))
+
+// Middleware untuk kirim session ke semua halaman
+app.use((req, res, next) => {
+  res.locals.session = req.session
+  next()
+})
+
+// Auth routes
+app.use('/', authRoutes)
 
 app.engine('hbs', engine({
   extname: '.hbs',
