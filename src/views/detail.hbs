@@ -1,0 +1,14 @@
+<div class="detail-container">
+    <h1>{{project.name}}</h1>
+    
+    {{#if project.img}}
+        <img src="{{project.img}}" class="detail-image" width="400">
+    {{/if}}
+    
+    <p><strong>Deskripsi:</strong></p>
+    <p>{{project.description}}</p>
+    
+    <p><strong>Tag:</strong> {{project.tag}}</p>
+    
+    <a href="/my-project" class="btn-back">Kembali</a>
+</div>

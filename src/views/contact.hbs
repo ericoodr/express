@@ -1,5 +1,10 @@
-<div style="max-width: 500px; margin: 0 auto;">
+<!-- src/views/contact.hbs -->
+<div class="form-container">
     <h1>Contact Me</h1>
+    
+    {{#if session.flash}}
+        <div class="alert alert-{{session.flash.type}}">{{session.flash.message}}</div>
+    {{/if}}
     
     <form action="/contact" method="POST">
         <div>

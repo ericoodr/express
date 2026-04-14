@@ -12,15 +12,11 @@
     
     <div id="formTambah" style="display: none;">
         <h3>Tambah Project Baru</h3>
-        <form action="/my-project" method="POST">
+        <form action="/my-project" method="POST" enctype="multipart/form-data">
             <input type="text" name="name" placeholder="Nama Project" required>
             <textarea name="description" placeholder="Deskripsi" rows="3" required></textarea>
             <input type="text" name="tag" placeholder="Tag" required>
-            
-            <form action="/upload-gambar" method="POST" enctype="multipart/form-data" id="formUpload">
-                <input type="file" name="image" accept="image/*" required>
-                <button type="submit">Upload Gambar</button>
-            </form>
+            <input type="file" name="image" accept="image/*" required>
             
             {{#if gambarSementara}}
                 <div>
@@ -38,12 +34,13 @@
             {{#each projects}}
                 <div class="card">
                     {{#if this.img}}
-                        <img src="{{this.img}}" class="project-image">
+                        <img src="{{this.img}}" class="project-image" width="200">
                     {{/if}}
                     <h3>{{this.name}}</h3>
                     <p>{{this.description}}</p>
                     <p><strong>Tag:</strong> {{this.tag}}</p>
                     <div class="card-actions">
+                        <a href="/my-project/{{this.id}}" class="btn-detail">Detail</a>
                         <a href="/my-project/edit/{{this.id}}" class="btn-edit">Edit</a>
                         <form action="/my-project/delete/{{this.id}}" method="POST" class="form-hapus">
                             <button type="submit" class="btn-hapus" onclick="return confirm('Yakin hapus?')">Hapus</button>

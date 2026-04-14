@@ -1,3 +1,6 @@
+import fs from 'fs'
+import path from 'path'
+
 export async function getProjects(req, res, db, gambarSementara) {
   try {
     const result = await db.query('SELECT * FROM projects WHERE user_id = $1 ORDER BY id ASC', [req.session.userId])
@@ -39,7 +42,11 @@ export async function getProjectsById(req, res, db) {
 export async function createProject(req, res, db, gambarSementara) {
   try {
     const { name, description, tag } = req.body
-    const img = gambarSementara
+    let img = null
+
+    if (req.file) {
+      img = `/uploads/${req.file.filename}`
+    }
 
     if (!name || !description || !tag) {
       req.session.flash = { type: 'danger', message: 'Semua field harus diisi' }
@@ -82,10 +89,19 @@ export async function updateProject(req, res, db, gambarSementara) {
   try {
     const { id } = req.params
     const { name, description, tag } = req.body
-    let img = gambarSementara
+    let img = null
 
-    if (!img) {
-      const result = await db.query('SELECT img FROM projects WHERE id = $1 AND user_id = $2', [id, req.session.userId])
+    const result = await db.query('SELECT img FROM projects WHERE id = $1 AND user_id = $2', [id, req.session.userId])
+    
+    if (req.file) {
+      if (result.rows[0].img && result.rows[0].img.startsWith('/uploads/')) {
+        const oldImagePath = path.join(process.cwd(), result.rows[0].img)
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath)
+        }
+      }
+      img = `/uploads/${req.file.filename}`
+    } else {
       img = result.rows[0].img
     }
 
@@ -102,6 +118,16 @@ export async function updateProject(req, res, db, gambarSementara) {
 export async function deleteProject(req, res, db) {
   try {
     const { id } = req.params
+    
+    const result = await db.query('SELECT img FROM projects WHERE id = $1 AND user_id = $2', [id, req.session.userId])
+    
+    if (result.rows.length > 0 && result.rows[0].img && result.rows[0].img.startsWith('/uploads/')) {
+      const imagePath = path.join(process.cwd(), result.rows[0].img)
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath)
+      }
+    }
+    
     await db.query('DELETE FROM projects WHERE id = $1 AND user_id = $2', [id, req.session.userId])
     req.session.flash = { type: 'success', message: 'Project berhasil dihapus' }
     res.redirect('/my-project')

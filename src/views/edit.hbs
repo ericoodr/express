@@ -1,7 +1,11 @@
 <div class="form-container">
     <h1>Edit Project</h1>
     
-    <form action="/my-project/edit/{{project.id}}" method="POST">
+    {{#if session.flash}}
+        <div class="alert alert-{{session.flash.type}}">{{session.flash.message}}</div>
+    {{/if}}
+    
+    <form action="/my-project/edit/{{project.id}}" method="POST" enctype="multipart/form-data">
         <div>
             <label>Nama Project</label>
             <input type="text" name="name" value="{{project.name}}" required>
@@ -18,8 +22,16 @@
         </div>
         
         <div>
-            <label>URL Gambar</label>
-            <input type="text" name="img" value="{{project.img}}">
+            <label>Gambar Saat Ini</label>
+            {{#if project.img}}
+                <img src="{{project.img}}" width="150">
+            {{/if}}
+        </div>
+        
+        <div>
+            <label>Ganti Gambar</label>
+            <input type="file" name="image" accept="image/*">
+            <small>Kosongkan jika tidak ingin mengganti gambar</small>
         </div>
         
         <button type="submit">Update</button>
